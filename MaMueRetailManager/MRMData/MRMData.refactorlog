@@ -7,4 +7,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="CashierId" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="e5f1e2f4-5790-444f-ad7c-4669dd7f1353" ChangeDateTime="10/08/2020 13:22:12">
+    <Property Name="ElementName" Value="[dbo].[User].[CreateData]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[User]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CreateDate" />
+  </Operation>
 </Operations>
