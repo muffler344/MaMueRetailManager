@@ -16,7 +16,7 @@ namespace MRMDesktopUI.ViewModels
     public class SalesViewModel : Screen
     {
         private BindingList<ProductDisplayModel> _products;
-        private int _itemQuantity = 0;
+        private int _itemQuantity = 1;
         private BindingList<CartItemDisplayModel> _cart = new BindingList<CartItemDisplayModel>();
         private IProductEndpoint _productEndpoint;
         private ProductDisplayModel _selectedProduct;
@@ -46,6 +46,19 @@ namespace MRMDesktopUI.ViewModels
             var productList = await _productEndpoint.GetAll();
             var products = _mapper.Map<List<ProductDisplayModel>>(productList);
             Products = new BindingList<ProductDisplayModel>(products);
+        }
+
+        private async Task ResetSalesViewModel()
+        {
+            Cart = new BindingList<CartItemDisplayModel>();
+            await LoadProducts();
+
+            NotifyOfPropertyChange(() => SubTotal);
+            NotifyOfPropertyChange(() => Tax);
+            NotifyOfPropertyChange(() => Total);
+            NotifyOfPropertyChange(() => CanCheckOut);
+            NotifyOfPropertyChange(() => CanAddToCart);
+
         }
 
         public BindingList<ProductDisplayModel> Products
@@ -202,12 +215,9 @@ namespace MRMDesktopUI.ViewModels
                 bool output = false;
 
                 //Make sure something is selcted
-                if (SelectedCartItem != null)
+                if (SelectedCartItem != null && SelectedCartItem?.QuantityInCart > 0)
                 {
-                    if (SelectedCartItem != null && SelectedCartItem?.Product.QuantityInStock > 0)
-                    {
-                        output = true;
-                    }
+                    output = true;
                 }
 
                 return output;
@@ -231,6 +241,7 @@ namespace MRMDesktopUI.ViewModels
             NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Total);
             NotifyOfPropertyChange(() => CanCheckOut);
+            NotifyOfPropertyChange(() => CanAddToCart);
         }
 
         public bool CanCheckOut
@@ -264,6 +275,8 @@ namespace MRMDesktopUI.ViewModels
             }
 
             await _saleEndpoint.PostSale(sale);
+
+            await ResetSalesViewModel();
         }
     }
 }
