@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Linq;
+using System.Reflection.Emit;
 
 namespace MRMDataManager.Library.DataAccess
 {
@@ -77,5 +78,14 @@ namespace MRMDataManager.Library.DataAccess
                 }
              }
         }
+
+        public List<SaleReportModel> GetSaleReport()
+        {
+            SqlDataAccess sql = new SqlDataAccess();
+            var output = sql.LoadData<SaleReportModel, dynamic>("dbo.spSale_SaleReport", new { }, "MRMData");
+            return output;
+        }
+
     }
+
 }
