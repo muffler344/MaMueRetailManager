@@ -18,6 +18,5 @@ namespace MRMDataManager.Controllers
             ProductData data = new ProductData();
             return data.GetProducts();
         }
-
     }
 }

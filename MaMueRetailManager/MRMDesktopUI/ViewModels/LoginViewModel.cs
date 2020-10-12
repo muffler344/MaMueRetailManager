@@ -8,8 +8,8 @@ namespace MRMDesktopUI.ViewModels
 {
     public class LoginViewModel : Screen
     {
-        private string _userName;
-        private string _password;
+        private string _userName = "muffler344xy@gmail.com";
+        private string _password = "Password123!";
         private string _errorMessage;
         private IAPIHelper _apiHelper;
         private IEventAggregator _events;
