@@ -10,6 +10,7 @@ namespace MRMDataManager.Controllers
     public class SaleController : ApiController
     {
         [HttpPost]
+        [Authorize(Roles = "Cashier")]
         public void Post(SaleModel sale)
         {
             SaleData data = new SaleData();
@@ -20,6 +21,7 @@ namespace MRMDataManager.Controllers
 
         [HttpGet]
         [Route("GetSalesReport")]
+        [Authorize(Roles = "Admin,Manager")]
         public List<SaleReportModel> GetSaleReport()
         {
             SaleData data = new SaleData();

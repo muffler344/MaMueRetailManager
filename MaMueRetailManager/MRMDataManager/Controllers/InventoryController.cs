@@ -12,6 +12,7 @@ namespace MRMDataManager.Controllers
     public class InventoryController : ApiController
     {
         [HttpGet]
+        [Authorize(Roles = "Manager,Admin")]
         public List<InventoryModel> Get()
         {
             InventoryData data = new InventoryData();
@@ -19,6 +20,7 @@ namespace MRMDataManager.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public void Post(InventoryModel item)
         {
             InventoryData data = new InventoryData();
