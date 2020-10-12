@@ -14,7 +14,7 @@ namespace MRMDataManager.Library.Internal.DataAccess
     {
         private IDbConnection _connection;
         private IDbTransaction _transaction;
-
+        private bool _isClosed = false;
         public string GetConnectionString(string name)
         {
             return ConfigurationManager.ConnectionStrings[name].ConnectionString;
@@ -51,6 +51,7 @@ namespace MRMDataManager.Library.Internal.DataAccess
             _connection.Open();
 
             _transaction = _connection.BeginTransaction();
+            _isClosed = false;
         }
 
         public void SaveDataInTransaction<T>(string storedProcedure, T parameters)
@@ -71,24 +72,35 @@ namespace MRMDataManager.Library.Internal.DataAccess
         {
             _transaction?.Commit();
             _connection?.Close();
+
+            _isClosed = true;
         }
 
         public void RollbackTransaction()
         {
             _transaction?.Rollback();
             _connection?.Close();
+
+            _isClosed = true;
         }
 
         public void Dispose()
         {
-            ComitTransaction();
+            if (_isClosed == false)
+            {
+                try
+                {
+                    ComitTransaction();
+                }
+                catch
+                {
+                    //Log this Issue
+                }
+            }
+
+            _transaction = null;
+            _connection = null;
+            
         }
-
-        //Open connection /start transaction methode
-        //load using teh transaction 
-        //save using the tarnsacttion
-        //Close the connection /stop transaction methode
-        //Dispose
-
     }
 }
