@@ -65,5 +65,10 @@ namespace MRMDesktopUI.ViewModels
             ActivateItem(_salesVM);
             NotifyOfPropertyChange(() => IsLoggedIn);
         }
+
+        public void UserManagement()
+        {
+            ActivateItem(IoC.Get<UserDisplayViewModel>());
+        }
     }
 }
