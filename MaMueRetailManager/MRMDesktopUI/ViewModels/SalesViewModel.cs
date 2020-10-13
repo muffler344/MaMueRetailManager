@@ -7,9 +7,11 @@ using MRMDesktopUI.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace MRMDesktopUI.ViewModels
 {
@@ -24,21 +26,49 @@ namespace MRMDesktopUI.ViewModels
         private IConfigHelper _configHelper;
         private ISaleEndpoint _saleEndpoint;
         private IMapper _mapper;
+        private StatusInfoViewModel _status;
+        private  IWindowManager _window;
 
         public SalesViewModel(IProductEndpoint productEndpoint, 
             IConfigHelper configHelper, ISaleEndpoint saleEndpoint,
-            IMapper mapper)
+            IMapper mapper, StatusInfoViewModel status, IWindowManager window)
         {
             _productEndpoint = productEndpoint;
             _configHelper = configHelper;
             _saleEndpoint = saleEndpoint;
             _mapper = mapper;
+            _status = status;
+            _window = window;
         }
 
         protected override async void OnViewLoaded(object view)
         {
             base.OnViewLoaded(view);
-            await LoadProducts();
+            try
+            {
+                await LoadProducts();
+            }
+            catch (Exception ex)
+            {
+                dynamic settings = new ExpandoObject();
+                settings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                settings.ResizeMode = ResizeMode.NoResize;
+                settings.Title = "System Error";
+
+                if (ex.Message == "Unothorized")
+                {
+                    _status.UpdateMessage("Unothorized", "You do not have permissions");
+                    _window.ShowDialog(_status, null, settings);
+                }
+                else
+                {
+                    _status.UpdateMessage("Error", ex.Message);
+                    _window.ShowDialog(_status, null, settings);
+                }
+
+                
+                TryClose();
+            }
         }
 
         private async Task LoadProducts()
