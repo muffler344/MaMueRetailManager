@@ -1,16 +1,15 @@
-﻿using MRMDataManager.Library.DataAccess;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MRMDataManager.Library.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
+using MRMDataManager.Library.DataAccess;
 
-namespace MRMDataManager.Controllers
+namespace MRMApi.Controllers
 {
     [Authorize]
-    public class InventoryController : ApiController
+    [Route("api/[controller]")]
+    [ApiController]
+    public class InventoryController : ControllerBase
     {
         [HttpGet]
         [Authorize(Roles = "Manager,Admin")]

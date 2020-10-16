@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MRMDataManager.Library.Models
 {
-    public class InventroyModel
+    public class InventoryModel
     {
         public int ProductId { get; set; }
         public int Quantity { get; set; }
