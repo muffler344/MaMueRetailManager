@@ -19,6 +19,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WPF", "WPF", "{4FA40B06-865
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MRMApi", "MRMApi\MRMApi.csproj", "{072F37D3-022C-41DE-B4F7-4721D065E5DF}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8A2C9CE2-761B-4FCE-9EA9-488D0FE0D0C7}"
+	ProjectSection(SolutionItems) = preProject
+		RoadMap.txt = RoadMap.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
