@@ -142,16 +142,16 @@ namespace MRMDesktopUI.ViewModels
                 if (ex.Message == "Unothorized")
                 {
                     _status.UpdateMessage("Unothorized", "You do not have permissions");
-                    _window.ShowDialog(_status, null, settings);
+                    await _window.ShowDialogAsync(_status, null, settings);
                 }
                 else
                 {
                     _status.UpdateMessage("Error", ex.Message);
-                    _window.ShowDialog(_status, null, settings);
+                    await _window.ShowDialogAsync(_status, null, settings);
                 }
 
 
-                TryClose();
+                await TryCloseAsync();
             }
         }
 
