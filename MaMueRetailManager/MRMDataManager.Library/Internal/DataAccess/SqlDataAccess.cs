@@ -2,16 +2,13 @@
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MRMDataManager.Library.Internal.DataAccess
 {
-    internal class SqlDataAccess : IDisposable
+    public class SqlDataAccess : IDisposable, ISqlDataAccess
     {
         private IDbConnection _connection;
         private IDbTransaction _transaction;
@@ -28,7 +25,7 @@ namespace MRMDataManager.Library.Internal.DataAccess
             return _config.GetConnectionString(name);
         }
 
-        public List<T> LoadData<T,U>(string storedProcedure, U parameters, string connectionStringName)
+        public List<T> LoadData<T, U>(string storedProcedure, U parameters, string connectionStringName)
         {
             string connectionString = GetConnectionString(connectionStringName);
 
@@ -64,7 +61,7 @@ namespace MRMDataManager.Library.Internal.DataAccess
 
         public void SaveDataInTransaction<T>(string storedProcedure, T parameters)
         {
-            _connection.Execute(storedProcedure, parameters, 
+            _connection.Execute(storedProcedure, parameters,
                 commandType: CommandType.StoredProcedure, transaction: _transaction);
         }
 
@@ -108,7 +105,7 @@ namespace MRMDataManager.Library.Internal.DataAccess
 
             _transaction = null;
             _connection = null;
-            
+
         }
     }
 }

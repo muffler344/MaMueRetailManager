@@ -1,31 +1,22 @@
-﻿using Microsoft.Extensions.Configuration;
-using MRMDataManager.Library.Internal.DataAccess;
+﻿using MRMDataManager.Library.Internal.DataAccess;
 using MRMDataManager.Library.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MRMDataManager.Library.DataAccess
 {
-    public class UserData
+    public class UserData : IUserData
     {
-        private readonly IConfiguration _config;
-        public UserData(IConfiguration config)
+        private readonly ISqlDataAccess _sqlDataAccess;
+        public UserData(ISqlDataAccess sqlDataAccess)
         {
-            _config = config;
+            _sqlDataAccess = sqlDataAccess;
         }
 
         public List<UserModel> GetUserById(string Id)
         {
-            SqlDataAccess sql = new SqlDataAccess(_config);
+            var output = _sqlDataAccess.LoadData<UserModel, dynamic>("dbo.spUserLookup", new { Id }, "MRMData");
 
-            var p = new { Id = Id };
-
-            var output = sql.LoadData<UserModel, dynamic>("dbo.spUserLookup", p,"MRMData");
-
-            return output; 
+            return output;
         }
     }
 }

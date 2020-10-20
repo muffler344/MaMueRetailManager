@@ -5,26 +5,23 @@ using Microsoft.Extensions.Configuration;
 
 namespace MRMDataManager.Library.DataAccess
 {
-    public class InventoryData
+    public class InventoryData : IInventoryData
     {
-        private readonly IConfiguration _config;
-        public InventoryData(IConfiguration config)
+        private readonly ISqlDataAccess _sqlDataAccess;
+        public InventoryData(ISqlDataAccess sqlDataAccess) 
         {
-            _config = config;
+            _sqlDataAccess = sqlDataAccess;
         }
 
         public List<InventoryModel> GetInventory()
         {
-            SqlDataAccess sql = new SqlDataAccess(_config);
-            var output = sql.LoadData<InventoryModel, dynamic>("dbo.spInventory_GetAll", new { }, "MRMData");
+            var output = _sqlDataAccess.LoadData<InventoryModel, dynamic>("dbo.spInventory_GetAll", new { }, "MRMData");
             return output;
         }
 
         public void SaveInventoryRecord(InventoryModel item)
         {
-            SqlDataAccess sql = new SqlDataAccess(_config);
-
-            sql.SaveData("dbo.spInventory_Insert", item, "MRMData");
+            _sqlDataAccess.SaveData("dbo.spInventory_Insert", item, "MRMData");
         }
     }
 }
